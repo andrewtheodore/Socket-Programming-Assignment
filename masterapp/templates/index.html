@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>Master Node</title>
+</head>
+
+<body>
+    <h1>Master Node</h1>
+    <form method="POST">
+        {% csrf_token %}
+        <table>
+            <div class="form-group">
+                {{ form }}
+            </div>
+        </table><br>
+        <button type="submit" class="btn btn-primary">
+            Submit
+        </button>
+    </form><br>
+
+    <h2>Job List</h2>
+    <table border='1'>
+        <tr>
+            <td><strong>Job ID</strong></td>
+            <td>Job Name</td>
+            <td>Job Type</td>
+            <td>Worker</td>
+            <td>Job Status</td>
+			<td>Job Created On</td>
+			<td>Job Work Time</td>
+        </tr>
+        {% for job in job_list %}
+        <tr>
+            <td><strong>{{ job.id }}</strong></td>
+            <td>{{ job.name }}</td>
+            <td>{{ job.job_type }}</td>
+            <td>{{ job.worker }}</td>
+            <td>{{ job.status }}</td>
+			<td>{{ job.request_timestamp }}</td>
+			<td>{{ job.job_work_time }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
