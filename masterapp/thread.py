@@ -7,7 +7,8 @@ from .models import Job
 
 def supervise_jobs(job, worker, worker_queue):
 	s = socket.socket()
-	s.connect(worker)
+	s.connect(worker['dest'])
+	job['key'] = worker['password']
 	s.send(json.dumps(job).encode('utf-8'))
 	while True:
 		whole_data = s.recv(1024).decode('utf-8')
@@ -35,7 +36,7 @@ def schedule_jobs(job_queue, worker_queue):
 
 		# Update the worker
 		data = Job.objects.get(pk=job['id'])
-		data.worker = str(worker)
+		data.worker = str(worker['dest'])
 		data.save()
 
 		Thread(target = supervise_jobs, args = (job, worker, worker_queue)).start()
@@ -43,11 +44,12 @@ def schedule_jobs(job_queue, worker_queue):
 
 JOB_QUEUE = Queue()
 WORKER_QUEUE = Queue()
-WORKER_QUEUE.put(('127.0.0.1', 1337))
-WORKER_QUEUE.put(('127.0.0.1', 1339))
 
 sj = Thread(target = schedule_jobs, args = (JOB_QUEUE, WORKER_QUEUE))
 sj.start()
 
 def add_job(job):
 	JOB_QUEUE.put(job)
+	
+def add_worker(worker):
+	WORKER_QUEUE.put(worker)

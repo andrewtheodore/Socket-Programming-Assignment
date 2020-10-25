@@ -23,6 +23,19 @@
             Submit
         </button>
     </form><br>
+    
+    <h3>Register Worker</h3>
+    <form method="POST" action="/worker">
+        {% csrf_token %}
+        <table>
+            <div class="form-group">
+                {{ w_form }}
+            </div>
+        </table><br>
+        <button type="submit" class="btn btn-primary">
+            Submit
+        </button>
+    </form><br>
 
     <h2>Job List</h2>
     <table border='1'>
@@ -32,7 +45,7 @@
             <td>Job Type</td>
             <td>Worker</td>
             <td>Job Status</td>
-			<td>Job Created On</td>
+			<td>Request Timestamp</td>
 			<td>Job Work Time</td>
         </tr>
         {% for job in job_list %}
